@@ -4,7 +4,7 @@ package com.example.juan.marvelheroes.Models;
  * Created by Juan on 17/07/2017.
  */
 
-class Thumbnail {
+public class Thumbnail {
 
     private String path;
     private String extension;
@@ -23,5 +23,9 @@ class Thumbnail {
 
     public void setExtension(String extension) {
         this.extension = extension;
+    }
+
+    public String getFullPath(){
+        return path + "." + extension;
     }
 }

@@ -27,6 +27,9 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = MainActivity.class.getSimpleName();
     private static final String HERO_LIST_FRAGMENT = "hero_list_fragment";
     public static final int SUCCES_CODE = 200;
+    public static final String HERO_LIST = "hero_list";
+
+    private ArrayList<SuperHero> superHeros;
 
     @BindView(R.id.placeholder) FrameLayout placeholder;
 
@@ -42,13 +45,20 @@ public class MainActivity extends AppCompatActivity {
             public void onResponse(Call<Basic<Data<ArrayList<SuperHero>>>> call, Response<Basic<Data<ArrayList<SuperHero>>>> response) {
 
                 if (response.code() == SUCCES_CODE){
+
+                    superHeros = response.body().getData().getResults();
+
+                    Bundle bundle = new Bundle();
+                    bundle.putParcelableArrayList(HERO_LIST, superHeros);
+
                     FragmentManager fragmentManager = getSupportFragmentManager();
                     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
                     HeroListFragment heroListFragment = new HeroListFragment();
+                    heroListFragment.setArguments(bundle);
                     fragmentTransaction.add(R.id.placeholder, heroListFragment, HERO_LIST_FRAGMENT);
                     fragmentTransaction.commit();
-                    Log.d(TAG, "Hero name: " + response.body().getData().getResults().get(2).getName());
+                    Log.d(TAG, "Hero name: " + superHeros.get(2).getName());
                 }else{
                     Log.d(TAG, "Error en la respuesta");
                 }
