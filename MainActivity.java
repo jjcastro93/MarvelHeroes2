@@ -51,7 +51,6 @@ public class MainActivity extends AppCompatActivity {
                     Log.d(TAG, "Hero name: " + response.body().getData().getResults().get(2).getName());
                 }else{
                     Log.d(TAG, "Error en la respuesta");
-                    Log.d(TAG, "Error en la respuesta");
                 }
 
             }
