@@ -1,10 +1,12 @@
 package com.example.juan.marvelheroes;
 
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
@@ -39,6 +41,12 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
+        getHeroList();
+
+    }
+
+    private void getHeroList(){
+
         Call<Basic<Data<ArrayList<SuperHero>>>> superHeroesCall = MarvelService.getMarvelAPI().getSuperHeroes(AVENGERS_SERIE_ID);
         superHeroesCall.enqueue(new Callback<Basic<Data<ArrayList<SuperHero>>>>() {
             @Override
@@ -52,24 +60,47 @@ public class MainActivity extends AppCompatActivity {
                     bundle.putParcelableArrayList(HERO_LIST, superHeros);
 
                     FragmentManager fragmentManager = getSupportFragmentManager();
-                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
-                    HeroListFragment heroListFragment = new HeroListFragment();
-                    heroListFragment.setArguments(bundle);
-                    fragmentTransaction.add(R.id.placeholder, heroListFragment, HERO_LIST_FRAGMENT);
-                    fragmentTransaction.commit();
+                    boolean isTablet = getResources().getBoolean(R.bool.is_tablet);
+                    if (isTablet)
+                        Toast.makeText(MainActivity.this, "Esta es una tablet", Toast.LENGTH_LONG).show();
+                    else
+                        Toast.makeText(MainActivity.this, "Esta no es una tablet", Toast.LENGTH_LONG).show();
+
+
+                    HeroListFragment savedHeroListFragment = (HeroListFragment) fragmentManager.findFragmentByTag(HERO_LIST_FRAGMENT);
+
+                    if(savedHeroListFragment == null){
+                        HeroListFragment heroListFragment = new HeroListFragment();
+                        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                        heroListFragment.setArguments(bundle);
+                        fragmentTransaction.add(R.id.placeholder, heroListFragment, HERO_LIST_FRAGMENT);
+                        fragmentTransaction.commit();
+                    }
+
                     Log.d(TAG, "Hero name: " + superHeros.get(2).getName());
                 }else{
-                    Log.d(TAG, "Error en la respuesta");
+                    displayErrorMessage(getString(R.string.server_error_message));
                 }
 
             }
 
             @Override
             public void onFailure(Call<Basic<Data<ArrayList<SuperHero>>>> call, Throwable t) {
-                Log.d(TAG, "Error en la llamada");
+                displayErrorMessage(getString(R.string.network_error_message));
             }
         });
+    }
 
+    public void displayErrorMessage(String message){
+        Snackbar snackbar = Snackbar.make(placeholder, message, Snackbar.LENGTH_INDEFINITE)
+                .setAction(R.string.ok, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        getHeroList();
+                    }
+                });
+
+        snackbar.show();
     }
 }

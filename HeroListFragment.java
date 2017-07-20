@@ -25,6 +25,7 @@ import butterknife.ButterKnife;
 public class HeroListFragment extends Fragment {
 
     public static final String HERO_DETAIL_FRAGMENT = "HERO_DETAIL_FRAGMENT";
+    public static final String HERO_DETAIL = "HERO_DETAIL";
     RecyclerView rvHeroesList;
 
     public static final String TAG = HeroListFragment.class.getSimpleName();
@@ -42,17 +43,9 @@ public class HeroListFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Bundle bundle = getArguments();
-        superHeros = bundle.getParcelableArrayList(MainActivity.HERO_LIST);
-
-        if(superHeros == null) {
-            Log.d(TAG, "Error al obtener a los uper heroes");
-
-        }else{
-            Log.d(TAG, "Hero: " + superHeros.get(2).getName());
+        if (getArguments() != null){
+            superHeros = getArguments().getParcelableArrayList(MainActivity.HERO_LIST);
         }
-
-
     }
 
     @Override
@@ -72,20 +65,16 @@ public class HeroListFragment extends Fragment {
             }
         });
 
-        HeroClickListener heroe = new HeroClickListener() {
-            @Override
-            public void onHeroClicked(SuperHero superHero) {
-                Toast.makeText(getContext(), "hiiiiiiiiii", Toast.LENGTH_SHORT).show();
-            }
-        };
         rvHeroesList.setAdapter(heroAdapter);
         return view;
     }
 
     private void goToHeroDetailFragment(SuperHero superHero) {
-        Toast.makeText(getContext(), "Hero Clicked: " + superHero.getName(), Toast.LENGTH_SHORT).show();
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(HERO_DETAIL, superHero);
 
         HeroDetailFragment heroDetailFragment = new HeroDetailFragment();
+        heroDetailFragment.setArguments(bundle);
 
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
