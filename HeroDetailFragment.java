@@ -1,7 +1,5 @@
 package com.example.juan.marvelheroes;
 
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -9,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.juan.marvelheroes.Models.SuperHero;
@@ -17,9 +14,6 @@ import com.example.juan.marvelheroes.Models.SuperHero;
 public class HeroDetailFragment extends Fragment {
 
     SuperHero superHero;
-    private TextView tvHeroDetailTitle;
-    private TextView tvHeroDetailDescription;
-    private ImageView ivHeroDetailThumbnail;
 
     public HeroDetailFragment() {
         // Required empty public constructor
@@ -42,9 +36,9 @@ public class HeroDetailFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_hero_detail, container, false);
 
-        tvHeroDetailTitle = view.findViewById(R.id.tvHeroDetailTitle);
-        ivHeroDetailThumbnail = view.findViewById(R.id.ivHeroDetailThumbnail);
-        tvHeroDetailDescription = view.findViewById(R.id.tvHeroDetailDescription);
+        TextView tvHeroDetailTitle = view.findViewById(R.id.tvHeroDetailTitle);
+        TextView tvHeroDetailDescription = view.findViewById(R.id.tvHeroDetailDescription);
+        ImageView ivHeroDetailThumbnail = view.findViewById(R.id.ivHeroDetailThumbnail);
 
         tvHeroDetailTitle.setText(superHero.getName());
 

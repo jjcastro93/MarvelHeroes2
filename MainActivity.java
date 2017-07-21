@@ -28,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
     public static final int AVENGERS_SERIE_ID = 354;
     private static final String TAG = MainActivity.class.getSimpleName();
     private static final String HERO_LIST_FRAGMENT = "hero_list_fragment";
+    private static final String HERO_GRID_FRAGMENT = "hero_grid_fragment";
     public static final int SUCCES_CODE = 200;
     public static final String HERO_LIST = "hero_list";
 
@@ -62,21 +63,30 @@ public class MainActivity extends AppCompatActivity {
                     FragmentManager fragmentManager = getSupportFragmentManager();
 
                     boolean isTablet = getResources().getBoolean(R.bool.is_tablet);
-                    if (isTablet)
+                    if (isTablet) {
                         Toast.makeText(MainActivity.this, "Esta es una tablet", Toast.LENGTH_LONG).show();
-                    else
-                        Toast.makeText(MainActivity.this, "Esta no es una tablet", Toast.LENGTH_LONG).show();
+                        HeroGridFragment savedHeroGridFragment = (HeroGridFragment) fragmentManager.findFragmentByTag(HERO_GRID_FRAGMENT);
 
+                        if(savedHeroGridFragment == null){
+                            HeroGridFragment heroGridFragment = new HeroGridFragment();
+                            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                            heroGridFragment.setArguments(bundle);
+                            fragmentTransaction.add(R.id.placeholder, heroGridFragment, HERO_GRID_FRAGMENT);
+                            fragmentTransaction.commit();
+                        }
+                    }else {
+                        Toast.makeText(MainActivity.this, "Esta es un telefono", Toast.LENGTH_LONG).show();
+                        HeroListFragment savedHeroListFragment = (HeroListFragment) fragmentManager.findFragmentByTag(HERO_LIST_FRAGMENT);
 
-                    HeroListFragment savedHeroListFragment = (HeroListFragment) fragmentManager.findFragmentByTag(HERO_LIST_FRAGMENT);
-
-                    if(savedHeroListFragment == null){
-                        HeroListFragment heroListFragment = new HeroListFragment();
-                        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                        heroListFragment.setArguments(bundle);
-                        fragmentTransaction.add(R.id.placeholder, heroListFragment, HERO_LIST_FRAGMENT);
-                        fragmentTransaction.commit();
+                        if(savedHeroListFragment == null){
+                            HeroListFragment heroListFragment = new HeroListFragment();
+                            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                            heroListFragment.setArguments(bundle);
+                            fragmentTransaction.add(R.id.placeholder, heroListFragment, HERO_LIST_FRAGMENT);
+                            fragmentTransaction.commit();
+                        }
                     }
+
 
                     Log.d(TAG, "Hero name: " + superHeros.get(2).getName());
                 }else{

@@ -9,38 +9,34 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.example.juan.marvelheroes.HeroListFragment;
+import com.example.juan.marvelheroes.HeroGridFragment;
 import com.example.juan.marvelheroes.Models.SuperHero;
 import com.example.juan.marvelheroes.R;
 
 import java.util.ArrayList;
 
-/**
- * Created by Juan on 19/07/2017.
- */
-
-public class HeroAdapter extends RecyclerView.Adapter<HeroAdapter.MyViewHolder>{
+public class HeroGridAdapter extends RecyclerView.Adapter<HeroGridAdapter.MyViewHolder>{
 
     Context context;
     ArrayList<SuperHero> superHeros;
-    HeroListFragment.HeroClickListener heroClickListener;
+    HeroGridFragment.HeroClickListener heroClickListener;
 
-    public HeroAdapter(Context context, ArrayList<SuperHero> superHeros, HeroListFragment.HeroClickListener heroClickListener) {
+    public HeroGridAdapter(Context context, ArrayList<SuperHero> superHeros, HeroGridFragment.HeroClickListener heroClickListener) {
         this.context = context;
         this.superHeros = superHeros;
         this.heroClickListener = heroClickListener;
     }
 
     @Override
-    public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public HeroGridAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        View view = LayoutInflater.from(context).inflate(R.layout.hero_list_item, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.hero_grid_item, parent, false);
 
-        return new MyViewHolder(view);
+        return new HeroGridAdapter.MyViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(MyViewHolder holder, int position) {
+    public void onBindViewHolder(HeroGridAdapter.MyViewHolder holder, int position) {
 
         SuperHero superHero = superHeros.get(position);
 
@@ -60,11 +56,11 @@ public class HeroAdapter extends RecyclerView.Adapter<HeroAdapter.MyViewHolder>{
         public MyViewHolder(View itemView) {
             super(itemView);
 
-            ivHeroPicture = itemView.findViewById(R.id.heroPictureImageView);
-            tvHeroDescription = itemView.findViewById(R.id.heroDetailNameTextView);
+            ivHeroPicture = itemView.findViewById(R.id.ivHeroPicture);
+            tvHeroDescription = itemView.findViewById(R.id.tvHeroDetailName);
         }
 
-        public void bind(Context context, final SuperHero superHero, final HeroListFragment.HeroClickListener heroClickListener){
+        public void bind(Context context, final SuperHero superHero, final HeroGridFragment.HeroClickListener heroClickListener){
             tvHeroDescription.setText(superHero.getName());
             Glide.with(context).load(superHero.getThumbnail().getFullPath()).into(ivHeroPicture);
 
@@ -77,3 +73,4 @@ public class HeroAdapter extends RecyclerView.Adapter<HeroAdapter.MyViewHolder>{
         }
     }
 }
+
